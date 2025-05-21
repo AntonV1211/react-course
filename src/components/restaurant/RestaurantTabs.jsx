@@ -2,23 +2,23 @@ import { useState } from 'react';
 import { RestaurantDetails } from './RestaurantDetails.jsx';
 
 export const RestaurantTabs = ({ restaurants }) => {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const activeRestaurant = restaurants[activeIndex];
+    const [activeId, setActiveId] = useState(restaurants[0]?.id);
+    const activeRestaurant = restaurants.find(restauran => restauran.id === activeId);
 
     return (
         <div>
             <div className='restaurant-tabs'>
-                {restaurants.map((restaurant, idx) => (
+                {restaurants.map((restaurant) => (
                     <button
-                        className={`restaurant-tab${activeIndex === idx ? ' active' : ''}`}
+                        className={`restaurant-tab${activeId === restaurant.id ? ' active' : ''}`}
                         key={restaurant.id}
-                        onClick={() => setActiveIndex(idx)}
+                        onClick={() => setActiveId(restaurant.id)}
                     >
                         {restaurant.name}
                     </button>
                 ))}
             </div>
-            <RestaurantDetails restaurant={activeRestaurant} />
+            {activeRestaurant && <RestaurantDetails restaurant={activeRestaurant} />}
         </div>
     );
 };
