@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Review } from './Review.jsx';
 
 export const Reviews = ({ reviews }) => (
@@ -8,7 +7,3 @@ export const Reviews = ({ reviews }) => (
         ))}
     </ul>
 );
-
-Reviews.propTypes = {
-    reviews: PropTypes.array.isRequired,
-};

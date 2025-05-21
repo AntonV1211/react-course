@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useCounter } from '../../hooks/useCounter.js';
 
 export const MenuItem = ({ name, price }) => {
@@ -18,9 +17,4 @@ export const MenuItem = ({ name, price }) => {
             </div>
         </li>
     );
-};
-
-MenuItem.propTypes = {
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
 };

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { RestaurantDetails } from './RestaurantDetails.jsx';
 
@@ -22,13 +21,4 @@ export const RestaurantTabs = ({ restaurants }) => {
             <RestaurantDetails restaurant={activeRestaurant} />
         </div>
     );
-};
-
-RestaurantTabs.propTypes = {
-    restaurants: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        name: PropTypes.string.isRequired,
-        menu: PropTypes.array.isRequired,
-        reviews: PropTypes.array.isRequired,
-    })).isRequired,
 };

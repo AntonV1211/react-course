@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Menu } from '../menu/Menu.jsx';
 import { Reviews } from '../reviews/Reviews.jsx';
 
@@ -19,11 +18,3 @@ export const RestaurantDetails = ({ restaurant }) => (
         </div>
     </div>
 );
-
-RestaurantDetails.propTypes = {
-    restaurant: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        menu: PropTypes.array.isRequired,
-        reviews: PropTypes.array.isRequired,
-    }).isRequired,
-};

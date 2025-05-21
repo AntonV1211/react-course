@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Header } from './Header.jsx';
 import { Footer } from './Footer.jsx';
 
@@ -11,7 +10,3 @@ export const Layout = ({ children }) => {
         </div>
     );
 }
-
-Layout.propTypes = {
-    children: PropTypes.node
-};
