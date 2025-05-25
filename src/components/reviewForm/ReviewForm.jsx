@@ -1,44 +1,8 @@
-import { useReducer } from 'react';
 import { Counter } from '../counter/Counter.jsx';
-
-const initialState = {
-    user: '',
-    text: '',
-    rating: 1,
-};
-
-function reducer(state, action) {
-    switch (action.type) {
-        case 'SET_FIELD':
-            return { ...state, [action.field]: action.value };
-        case 'SET_RATING':
-            return { ...state, rating: action.value };
-        case 'CLEAR':
-            return initialState;
-        default:
-            return state;
-    }
-}
+import { useReviewForm } from './useReviewForm.js';
 
 export const ReviewForm = () => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        dispatch({
-            type: 'SET_FIELD',
-            field: name,
-            value,
-        });
-    };
-
-    const handleRatingChange = (newRating) => {
-        dispatch({ type: 'SET_RATING', value: newRating });
-    };
-
-    const handleClear = () => {
-        dispatch({ type: 'CLEAR' });
-    };
+    const { state, handleChange, handleRatingChange, handleClear } = useReviewForm();
 
     return (
         <>

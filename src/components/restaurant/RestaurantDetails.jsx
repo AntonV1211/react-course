@@ -2,7 +2,7 @@ import { Menu } from '../menu/Menu.jsx';
 import { Reviews } from '../reviews/Reviews.jsx';
 
 export const RestaurantDetails = ({ restaurant }) => (
-    <div className="restaurant-details">
+    <div key={restaurant.id} className="restaurant-details">
         <div className="restaurant-details_header">
             <h2>{restaurant.name}</h2>
         </div>

@@ -1,7 +1,7 @@
 import { Review } from './Review.jsx';
 import { ReviewForm } from '../reviewForm/ReviewForm.jsx';
 
-export const Reviews = ({ idRestaurant, reviews }) => (
+export const Reviews = ({ reviews }) => (
     <>
         <h3>Reviews:</h3>
         <ul>
@@ -9,6 +9,6 @@ export const Reviews = ({ idRestaurant, reviews }) => (
                 <Review key={review.id} {...review} />
             ))}
         </ul>
-        <ReviewForm key={idRestaurant} />
+        <ReviewForm />
     </>
 );
