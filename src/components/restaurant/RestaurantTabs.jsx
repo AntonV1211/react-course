@@ -18,7 +18,7 @@ export const RestaurantTabs = ({ restaurants }) => {
                     </button>
                 ))}
             </div>
-            {activeRestaurant && <RestaurantDetails restaurant={activeRestaurant} />}
+            {activeRestaurant && <RestaurantDetails key={activeRestaurant.id} restaurant={activeRestaurant} />}
         </div>
     );
 };

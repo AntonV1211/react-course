@@ -8,12 +8,14 @@ export const RestaurantDetails = ({ restaurant }) => (
         </div>
         <div className="restaurant-details_content">
             <div>
-                <h3>Menu:</h3>
                 <Menu menu={restaurant.menu} />
             </div>
             <div>
-                <h3>Reviews:</h3>
-                <Reviews reviews={restaurant.reviews} />
+                {
+                    restaurant.reviews.length ?
+                        <Reviews idRestaurant={restaurant.id} reviews={restaurant.reviews} />
+                        : ""
+                }
             </div>
         </div>
     </div>

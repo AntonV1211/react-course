@@ -108,6 +108,31 @@ export const restaurants = [
     ],
   },
   {
+    id: "982bfbce-c5e0-41a0-9f99-d5c2gfdse49d",
+    name: "No reviews",
+    menu: [
+      {
+        id: "08c9ffa0-d003-4310-9e15-2097asda43296e",
+        name: "Cinnamon buns",
+        price: 5,
+        ingredients: ["bread"],
+      },
+      {
+        id: "64a4967c-2080-4a99-9074-4655vcxzx69a95",
+        name: "Semlor",
+        price: 2,
+        ingredients: ["bread", "cream"],
+      },
+      {
+        id: "4bc8528e-26d1-46c3-a522-8e18d1bcvxzx8c84",
+        name: "Saffron bun",
+        price: 4,
+        ingredients: ["bread"],
+      },
+    ],
+    reviews: [],
+  },
+  {
     id: "d9241927-09e1-44f3-8986-a76346869037",
     name: "Flat Iron",
     menu: [
