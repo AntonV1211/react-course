@@ -1,5 +1,6 @@
 import { Counter } from '../counter/Counter.jsx';
 import { useReviewForm } from './useReviewForm.js';
+import styles from './css/reviewForm.module.css';
 
 export const ReviewForm = () => {
     const { state, handleChange, handleRatingChange, handleClear } = useReviewForm();
@@ -7,29 +8,29 @@ export const ReviewForm = () => {
     return (
         <>
             <h3>Feedback form</h3>
-            <form onSubmit={e => e.preventDefault()} className="review-form">
-                <div className="review-form__field">
+            <form onSubmit={e => e.preventDefault()} className={styles.reviewForm}>
+                <div className={styles.field}>
                     <input
                         type="text"
                         name="user"
-                        className="review-form__input"
+                        className={styles.input}
                         placeholder="User name"
                         value={state.user}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <div className="review-form__field">
+                <div className={styles.field}>
                     <textarea
                         name="text"
-                        className="review-form__textarea"
+                        className={styles.textarea}
                         placeholder="Description"
                         value={state.text}
                         onChange={handleChange}
                         required
                     />
                 </div>
-                <div className="review-form__field review-form__field--rating">
+                <div className={[styles.field, styles.rating].join(' ')}>
                     <div style={{ fontSize: 14 }}>Rating:</div>
                     <Counter
                         count={state.rating}
@@ -39,8 +40,8 @@ export const ReviewForm = () => {
                         max={5}
                     />
                 </div>
-                <div className="review-form__actions">
-                    <button type="button" className="review-form__button" onClick={handleClear}>
+                <div className={styles.actions}>
+                    <button type="button" className={styles.button} onClick={handleClear}>
                         Clear
                     </button>
                 </div>

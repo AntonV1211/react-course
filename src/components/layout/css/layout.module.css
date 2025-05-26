@@ -1,0 +1,22 @@
+.header {
+    background: #1a2027;
+    color: #d1d7e0;
+    padding: 16px 0;
+    text-align: center;
+}
+
+.footer {
+    margin-top: auto;
+    padding: 16px 0;
+    background: #1a2027;
+    color: #d1d7e0;
+    text-align: center;
+}
+
+.layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    margin: 0 auto;
+}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { RestaurantDetails } from './RestaurantDetails.jsx';
+import styles from './css/restaurantTab.module.css';
 
 export const RestaurantTabs = ({ restaurants }) => {
     const [activeId, setActiveId] = useState(restaurants[0]?.id);
@@ -7,10 +8,13 @@ export const RestaurantTabs = ({ restaurants }) => {
 
     return (
         <div>
-            <div className='restaurant-tabs'>
+            <div className={styles.restaurantTabs}>
                 {restaurants.map((restaurant) => (
                     <button
-                        className={`restaurant-tab${activeId === restaurant.id ? ' active' : ''}`}
+                        className={[
+                            styles.restaurantTab,
+                            activeId === restaurant.id ? styles.active : ''
+                        ].join(' ')}
                         key={restaurant.id}
                         onClick={() => setActiveId(restaurant.id)}
                     >
