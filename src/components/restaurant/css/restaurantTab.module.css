@@ -1,0 +1,24 @@
+.restaurantTabs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.restaurantTab {
+    width: 100%;
+    height: 50px;
+    background: none;
+    border: none;
+    color: #d1d7e0;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.active {
+    border-bottom: 2px solid #ec775c;
+    font-weight: bold;
+
+}
+
+.restaurantTab:hover {
+    background-color: #2f3742;
+}
