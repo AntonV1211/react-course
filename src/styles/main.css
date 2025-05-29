@@ -18,6 +18,15 @@ ul li {
     margin-bottom: 10px;
 }
 
-.counter button {
+button {
     cursor: pointer;
+}
+
+button.alt {
+    background: #347d39;
+    color: #ffffff;
+}
+
+.button.alt:hover {
+    background: #429e49;
 }
