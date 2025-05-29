@@ -1,9 +1,14 @@
 import { Counter } from '../counter/Counter.jsx';
 import { useReviewForm } from './useReviewForm.js';
+import { useTheme } from '../context/themeContext/ThemeContext.jsx';
+import { useUser } from '../context/userContext/UserContext.jsx';
 import styles from './css/reviewForm.module.css';
 
 export const ReviewForm = () => {
     const { state, handleChange, handleRatingChange, handleClear } = useReviewForm();
+    const { theme } = useTheme();
+    const { user } = useUser();
+    if (!user) return null;
 
     return (
         <>
@@ -41,7 +46,7 @@ export const ReviewForm = () => {
                     />
                 </div>
                 <div className={styles.actions}>
-                    <button type="button" className={styles.button} onClick={handleClear}>
+                    <button type="button" className={`${styles.button} ${theme}`} onClick={handleClear}>
                         Clear
                     </button>
                 </div>
