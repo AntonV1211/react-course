@@ -1,4 +1,4 @@
-import styles from './layout.module.css';
+import styles from './css/layout.module.css';
 
 export const Header = () => (
     <header className={styles.header}>
