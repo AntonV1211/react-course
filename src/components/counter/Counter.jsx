@@ -1,23 +1,22 @@
 import { useTheme } from '../context/themeContext/ThemeContext.jsx';
-import { useUser } from '../context/userContext/UserContext.jsx';
+import classNames from 'classnames';
+import styles from './css/counter.module.css';
 
 export const Counter = ({ count, increment, decrement, min = 0, max = 100 }) => {
     const { theme } = useTheme();
-    const { user } = useUser();
-    if (!user) return null;
 
     return (
-        <div className="counter">
+        <div className={styles.counter}>
             <button
                 type="button"
-                className={`button ${theme}`}
+                className={classNames(styles.button, { [styles.alt]: theme === 'alt' })}
                 onClick={decrement}
                 disabled={count === min}
             >-</button>
-            <span style={{ margin: '0 8px' }}>{count}</span>
+            <span className={styles.counterValue}>{count}</span>
             <button
                 type="button"
-                className={[`button ${theme}`]}
+                className={classNames(styles.button, { [styles.alt]: theme === 'alt' })}
                 onClick={increment}
                 disabled={typeof max === 'number' ? count === max : false}
             >+</button>

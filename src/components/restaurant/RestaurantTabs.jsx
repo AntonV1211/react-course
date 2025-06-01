@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { RestaurantDetails } from './RestaurantDetails.jsx';
 import { useTheme } from '../context/themeContext/ThemeContext.jsx';
+import { RestaurantTabButton } from './RestaurantTabButton.jsx';
 import styles from './css/restaurantTab.module.css';
 
 export const RestaurantTabs = ({ restaurants }) => {
@@ -12,17 +13,14 @@ export const RestaurantTabs = ({ restaurants }) => {
         <div>
             <div className={styles.restaurantTabs}>
                 {restaurants.map((restaurant) => (
-                    <button
+                    <RestaurantTabButton
                         key={restaurant.id}
-                        className={[
-                            styles.restaurantTab,
-                            activeId === restaurant.id ? styles.active : '',
-                            `button ${theme}`
-                        ].join(' ')}
+                        active={activeId === restaurant.id}
+                        theme={theme}
                         onClick={() => setActiveId(restaurant.id)}
                     >
                         {restaurant.name}
-                    </button>
+                    </RestaurantTabButton>
                 ))}
             </div>
             {activeRestaurant && <RestaurantDetails key={activeRestaurant.id} restaurant={activeRestaurant} />}
