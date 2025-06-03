@@ -27,6 +27,6 @@ button.alt {
     color: #ffffff;
 }
 
-.button.alt:hover {
+button.alt:hover {
     background: #429e49;
 }

@@ -1,6 +1,7 @@
 import { Counter } from '../counter/Counter.jsx';
 import { useReviewForm } from './useReviewForm.js';
 import { useTheme } from '../context/themeContext/ThemeContext.jsx';
+import classNames from 'classnames';
 import styles from './css/reviewForm.module.css';
 
 export const ReviewForm = () => {
@@ -43,7 +44,7 @@ export const ReviewForm = () => {
                     />
                 </div>
                 <div className={styles.actions}>
-                    <button type="button" className={`${styles.button} ${theme}`} onClick={handleClear}>
+                    <button type="button" className={classNames(styles.button, theme)} onClick={handleClear}>
                         Clear
                     </button>
                 </div>
