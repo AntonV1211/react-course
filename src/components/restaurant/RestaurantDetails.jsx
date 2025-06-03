@@ -9,14 +9,12 @@ export const RestaurantDetails = ({ restaurant }) => (
         </div>
         <div className={style.content}>
             <div>
-                <Menu menu={restaurant.menu} />
+                <Menu dishIds={restaurant.menu} />
             </div>
             <div>
-                {
-                    restaurant.reviews.length ?
-                        <Reviews idRestaurant={restaurant.id} reviews={restaurant.reviews} />
-                        : ""
-                }
+                {restaurant.reviews.length ? (
+                    <Reviews reviewIds={restaurant.reviews} />
+                ) : null}
             </div>
         </div>
     </div>
