@@ -19,6 +19,8 @@ export const reviewsSlice = createSlice({
     },
 });
 
+export const { selectAllReviews, selectReviewById } = reviewsSlice.selectors;
+
 export const selectReviewsByIds = createSelector(
     [
         (state, reviewIds) => reviewIds,

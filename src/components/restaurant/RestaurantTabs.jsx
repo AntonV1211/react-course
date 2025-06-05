@@ -3,33 +3,31 @@ import { useSelector } from 'react-redux';
 import { RestaurantDetails } from './RestaurantDetails.jsx';
 import { useTheme } from '../context/themeContext/ThemeContext.jsx';
 import { RestaurantTabButton } from './RestaurantTabButton.jsx';
-import { selectAllRestaurants } from '../../redux/entities/restaurants/restaurantsSlice';
+import { selectAllRestaurantIds } from '../../redux/entities/restaurants/restaurantsSlice';
 import styles from './css/restaurantTab.module.css';
 
 export const RestaurantTabs = () => {
-    const restaurants = useSelector(selectAllRestaurants);
-    const [activeId, setActiveId] = useState(restaurants[0]?.id);
-    const activeRestaurant = restaurants.find(r => r.id === activeId);
+    const restaurantIds = useSelector(selectAllRestaurantIds);
+    const [activeId, setActiveId] = useState(restaurantIds[0]);
     const { theme } = useTheme();
 
-    if (!restaurants.length) return null;
+    if (!restaurantIds.length) return null;
 
     return (
         <div>
             <div className={styles.restaurantTabs}>
-                {restaurants.map((restaurant) => (
+                {restaurantIds.map((id) => (
                     <RestaurantTabButton
-                        key={restaurant.id}
-                        active={activeId === restaurant.id}
+                        key={id}
+                        restaurantId={id}
+                        active={activeId === id}
                         theme={theme}
-                        onClick={() => setActiveId(restaurant.id)}
-                    >
-                        {restaurant.name}
-                    </RestaurantTabButton>
+                        onClick={() => setActiveId(id)}
+                    />
                 ))}
             </div>
-            {activeRestaurant && (
-                <RestaurantDetails key={activeRestaurant.id} restaurant={activeRestaurant} />
+            {activeId && (
+                <RestaurantDetails key={activeId} restaurantId={activeId} />
             )}
         </div>
     );
