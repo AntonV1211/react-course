@@ -1,12 +1,9 @@
 import { MenuItem } from './MenuItem.jsx';
 
-export const Menu = ({ menu }) => (
-    <>
-        <h3>Menu:</h3>
-        <ul>
-            {menu.map((item) => (
-                <MenuItem key={item.id} {...item} />
-            ))}
-        </ul>
-    </>
+export const Menu = ({ dishIds }) => (
+    <ul>
+        {dishIds.map(id => (
+            <MenuItem key={id} dishId={id} />
+        ))}
+    </ul>
 );
