@@ -3,8 +3,9 @@ import { selectDishById } from '../../redux/entities/dishes/dishesSlice';
 import style from './css/menuItem.module.css';
 import { DishCounter } from './DishCounter.jsx';
 import { useUser } from '../context/userContext/UserContext.jsx';
+import { Link } from 'react-router-dom';
 
-export const MenuItem = ({ dishId }) => {
+export const MenuItem = ({ dishId, restaurantId }) => {
     const dish = useSelector(state => selectDishById(state, dishId));
     const { user } = useUser();
 
@@ -14,9 +15,15 @@ export const MenuItem = ({ dishId }) => {
         <li>
             <div className={style.menuItem}>
                 <div>
-                    <strong>{dish.name}</strong> - ${dish.price.toFixed(2)}
+                    <Link
+                        to={`/dish/${dishId}`}
+                        state={{ restaurantId: restaurantId }}
+                    >
+                        <strong>{dish.name}</strong>
+                    </Link>
+                    {' '} - ${dish.price.toFixed(2)}
                 </div>
-                {user && <DishCounter min={0} max={10} />}
+                {user && <DishCounter dishId={dishId} />}
             </div>
         </li>
     );
