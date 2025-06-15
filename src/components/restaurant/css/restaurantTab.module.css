@@ -22,3 +22,27 @@
 .restaurantTab:hover {
     background-color: #2f3742;
 }
+
+.tabs {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.tab {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    color: #d1d7e0;
+    font-size: 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.activeTab {
+    border-bottom: 2px solid #ec775c;
+    font-weight: bold;
+    color: #ec775c;
+}

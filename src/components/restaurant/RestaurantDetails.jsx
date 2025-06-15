@@ -15,7 +15,7 @@ export const RestaurantDetails = ({ restaurantId }) => {
             </div>
             <div className={style.content}>
                 <div>
-                    <Menu dishIds={restaurant.menu} />
+                    <Menu dishIds={restaurant.menu} restaurantId={restaurant.id} />
                 </div>
                 <div>
                     {restaurant.reviews.length ? (
