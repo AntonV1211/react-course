@@ -1,14 +1,20 @@
+import { useEffect } from 'react';
 import { useParams, NavLink, Outlet, Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
-//import styles from './css/restaurantDetails.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchRestaurantById, selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
 import styles from '../restaurant/css/restaurantTab.module.css';
 
 export const RestaurantDetailsLayout = () => {
     const { restaurantId } = useParams();
+    const dispatch = useDispatch();
     const location = useLocation();
     const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
-    if (!restaurant) return <div>Ресторан не найден</div>;
+    useEffect(() => {
+        if (!restaurant) {
+            dispatch(fetchRestaurantById(restaurantId));
+        }
+    }, [dispatch, restaurantId, restaurant]);
+    if (!restaurant) return <div>Load...</div>;
 
     if (location.pathname === `/restaurants/${restaurantId}`) {
         return <Navigate to="menu" replace />;

@@ -1,30 +1,47 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
-import { normalizedReviews } from '../../../../materials/normalized-mock.js';
+import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
 
-const initialState = {
-    ids: normalizedReviews.map(({ id }) => id),
-    entities: normalizedReviews.reduce((acc, review) => {
-        acc[review.id] = review;
-        return acc;
-    }, {}),
-};
+const reviewsAdapter = createEntityAdapter();
+
+export const fetchReviews = createAsyncThunk(
+    'reviews/fetchReviews',
+    async (restaurantId) => {
+        const response = await fetch(`http://localhost:3001/api/reviews?restaurantId=${restaurantId}`);
+        if (!response.ok) throw new Error('Error fetching reviews');
+        return await response.json();
+    }
+);
+
+const initialState = reviewsAdapter.getInitialState({
+    loading: false,
+    error: null,
+});
 
 export const reviewsSlice = createSlice({
     name: "reviews",
     initialState,
-    selectors: {
-        selectAllReviews: (state) => state.ids,
-        selectReviewById: (state, reviewId) => state.entities[reviewId],
-    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchReviews.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchReviews.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                reviewsAdapter.setAll(state, action.payload);
+            })
+            .addCase(fetchReviews.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            });
+    }
 });
 
-export const { selectAllReviews, selectReviewById } = reviewsSlice.selectors;
+export const {
+    selectAll: selectAllReviews,
+    selectById: selectReviewById,
+    selectIds: selectAllReviewIds,
+} = reviewsAdapter.getSelectors(state => state.reviews);
 
-export const selectReviewsByIds = createSelector(
-    [
-        (state, reviewIds) => reviewIds,
-        (state) => state.reviews.entities
-    ],
-    (reviewIds, entities) => reviewIds.map(id => entities[id])
-);
+export default reviewsSlice.reducer;

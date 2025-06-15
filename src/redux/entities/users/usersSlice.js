@@ -1,17 +1,47 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { normalizedUsers } from '../../../../materials/normalized-mock.js';
+import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
 
-const initialState = {
-    ids: normalizedUsers.map(({ id }) => id),
-    entities: normalizedUsers.reduce((acc, user) => {
-        acc[user.id] = user;
-        return acc;
-    }, {}),
-};
+const usersAdapter = createEntityAdapter();
+
+export const fetchUsers = createAsyncThunk(
+    'users/fetchUsers',
+    async () => {
+        const response = await fetch('http://localhost:3001/api/users/');
+        if (!response.ok) throw new Error('Error fetching users');
+        return await response.json();
+    }
+);
+
+const initialState = usersAdapter.getInitialState({
+    loading: false,
+    error: null,
+});
 
 export const usersSlice = createSlice({
     name: "users",
     initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchUsers.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUsers.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                usersAdapter.setAll(state, action.payload);
+            })
+            .addCase(fetchUsers.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            });
+    }
 });
 
-export const selectUserById = (state, userId) => state.users.entities[userId];
+export const {
+    selectAll: selectAllUsers,
+    selectById: selectUserById,
+    selectIds: selectAllUserIds,
+} = usersAdapter.getSelectors(state => state.users);
+
+export default usersSlice.reducer;
