@@ -2,9 +2,9 @@ import { useCounter } from '../../hooks/useCounter.js';
 import { Counter } from '../counter/Counter.jsx';
 import { useUser } from '../context/userContext/UserContext.jsx';
 
-export const DishCounter = ({ min = 0, max }) => {
+export const DishCounter = ({ dishId }) => {
     const { user } = useUser();
-    const { count, increment, decrement } = useCounter({ min: 0, max, initial: min });
+    const { count, increment, decrement } = useCounter(dishId);
 
     if (!user) return null;
 
@@ -13,8 +13,6 @@ export const DishCounter = ({ min = 0, max }) => {
             count={count}
             increment={increment}
             decrement={decrement}
-            min={min}
-            max={max}
         />
     );
 };
