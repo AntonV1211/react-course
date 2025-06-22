@@ -1,4 +1,4 @@
-import { useTheme } from '../context/themeContext/ThemeContext.jsx';
+import { useTheme } from '../../hooks/useTheme';
 import styles from './css/layout.module.css';
 import { UserPanel } from '../userPanel/UserPanel.jsx';
 

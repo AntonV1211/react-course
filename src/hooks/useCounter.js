@@ -1,17 +1,25 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, removeFromCart, selectItemAmountById } from '../redux/cart/cartSlise';
 
-export function useCounter({ min = 0, max, initial = 0 } = {}) {
-    const [count, setCount] = useState(initial);
+export const useCounter = (dishId) => {
+    const dispatch = useDispatch();
 
-    const increment = () => setCount(
-        (currentCount) =>
-            typeof max === 'number'
-                ? (currentCount < max ? currentCount + 1 : currentCount)
-                : currentCount + 1
+    const amount = useSelector((state) => selectItemAmountById(state, dishId));
+
+    const increment = useCallback(
+        () => dispatch(addToCart(dishId)),
+        [dispatch, dishId]
     );
-    const decrement = () => setCount(
-        (currentCount) => (currentCount > min ? currentCount - 1 : currentCount)
+
+    const decrement = useCallback(
+        () => dispatch(removeFromCart(dishId)),
+        [dispatch, dishId]
     );
 
-    return { count, increment, decrement };
+    return {
+        value: amount,
+        increment,
+        decrement
+    };
 }

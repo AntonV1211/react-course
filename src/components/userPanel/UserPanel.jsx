@@ -1,5 +1,5 @@
-import { useTheme } from '../context/themeContext/ThemeContext.jsx';
-import { useUser } from '../context/userContext/UserContext.jsx';
+import { useTheme } from '../../hooks/useTheme';
+import { useUser } from '../../hooks/useUser';
 import classNames from 'classnames';
 import styles from './css/userPanel.module.css';
 

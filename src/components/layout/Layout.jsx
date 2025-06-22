@@ -2,13 +2,16 @@ import { Header } from './Header.jsx';
 import { Footer } from './Footer.jsx';
 import { ProgressBar } from '../progressBar/ProgressBar.jsx';
 import styles from './css/layout.module.css';
+import { Cart } from '../cart/cart.jsx';
+import { Outlet } from 'react-router';
 
-export const Layout = ({ children }) => {
+export const Layout = () => {
     return (
         <div className={styles.layout}>
             <ProgressBar />
             <Header />
-            {children}
+            <Outlet />
+            <Cart />
             <Footer />
         </div>
     );
