@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch, useParams } from 'react-redux';
-import { selectDishById, fetchDishById } from '../../redux/entities/dishes/dishesSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams, useLocation, useNavigate } from 'react-router';
+import { selectDishById } from '../../redux/entities/dishes/dishesSlice';
+import { fetchDishById } from '../../redux/entities/dishes/dishesThunks.js';
 import { DishCounter } from '../menu/DishCounter.jsx';
-import { useLocation, useNavigate, useParams } from 'react-router';
 
 export const DishPage = () => {
     const { dishId } = useParams();
@@ -13,10 +14,8 @@ export const DishPage = () => {
     const restaurantId = location.state?.restaurantId;
 
     useEffect(() => {
-        if (!dish) {
-            dispatch(fetchDishById(dishId));
-        }
-    }, [dispatch, dishId, dish]);
+        dispatch(fetchDishById(dishId));
+    }, [dispatch, dishId]);
 
     if (!dish) return <div>Dish not found</div>;
 

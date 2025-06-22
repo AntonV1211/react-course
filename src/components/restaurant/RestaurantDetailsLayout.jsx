@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { useParams, NavLink, Outlet, useLocation, useNavigate, Navigate } from 'react-router';
+import { useParams, NavLink, Outlet, useLocation, useNavigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchRestaurantById, selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
+import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
+import { fetchRestaurantById } from '../../redux/entities/restaurants/restaurantsThunks';
 import styles from '../restaurant/css/restaurantTab.module.css';
 import classNames from 'classnames';
 
@@ -9,18 +10,20 @@ export const RestaurantDetailsLayout = () => {
     const { restaurantId } = useParams();
     const dispatch = useDispatch();
     const location = useLocation();
+    const navigate = useNavigate();
     const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
+
     useEffect(() => {
-        if (!restaurant) {
-            dispatch(fetchRestaurantById(restaurantId));
+        dispatch(fetchRestaurantById(restaurantId));
+    }, [dispatch, restaurantId]);
+
+    useEffect(() => {
+        if (restaurant && location.pathname === `/restaurants/${restaurantId}`) {
+            navigate('menu', { replace: true });
         }
-    }, [dispatch, restaurantId, restaurant]);
+    }, [restaurant, location.pathname, restaurantId, navigate]);
 
     if (!restaurant) return <div>Load...</div>;
-
-    if (location.pathname === `/restaurants/${restaurantId}`) {
-        return <Navigate to="menu" replace />;
-    }
 
     return (
         <div className={styles.restaurantDetails}>
@@ -33,7 +36,7 @@ export const RestaurantDetailsLayout = () => {
                         classNames(styles.tab, { [styles.activeTab]: isActive })
                     }
                 >
-                    Menuы
+                    Menu
                 </NavLink>
                 <NavLink
                     to="reviews"

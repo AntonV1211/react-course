@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '../../hooks/useTheme';
 import { RestaurantTabButton } from './RestaurantTabButton.jsx';
-import { selectAllRestaurantIds, fetchRestaurants } from '../../redux/entities/restaurants/restaurantsSlice';
-import { REQUEST_STATUS } from '../../redux/request_status/requestStatus.js';
+import { selectAllRestaurantIds } from '../../redux/entities/restaurants/restaurantsSlice';
+import { fetchRestaurants } from '../../redux/entities/restaurants/restaurantsThunks';
 import styles from './css/restaurantTab.module.css';
 import { useParams, NavLink } from 'react-router';
 import classNames from 'classnames';
@@ -11,11 +11,11 @@ import classNames from 'classnames';
 export const RestaurantTabs = () => {
     const dispatch = useDispatch();
     const restaurantIds = useSelector(selectAllRestaurantIds);
+
     useEffect(() => {
-        if (!restaurantIds.length) {
-            dispatch(fetchRestaurants());
-        }
-    }, [dispatch, restaurantIds.length]);
+        dispatch(fetchRestaurants());
+    }, [dispatch]);
+
     const { restaurantId } = useParams();
     const { theme } = useTheme();
 

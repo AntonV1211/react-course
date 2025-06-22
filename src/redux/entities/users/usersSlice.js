@@ -1,15 +1,7 @@
-import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { fetchUsers } from './usersThunks';
 
 const usersAdapter = createEntityAdapter();
-
-export const fetchUsers = createAsyncThunk(
-    'users/fetchUsers',
-    async () => {
-        const response = await fetch('http://localhost:3001/api/users/');
-        if (!response.ok) throw new Error('Error fetching users');
-        return await response.json();
-    }
-);
 
 const initialState = usersAdapter.getInitialState({
     loading: false,

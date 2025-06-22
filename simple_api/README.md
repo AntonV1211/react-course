@@ -1,4 +1,5 @@
 # API
+npm start-server
 
 ## Ресторан
 

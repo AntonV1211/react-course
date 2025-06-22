@@ -1,15 +1,7 @@
-import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { fetchReviews } from './reviewsThunks';
 
 const reviewsAdapter = createEntityAdapter();
-
-export const fetchReviews = createAsyncThunk(
-    'reviews/fetchReviews',
-    async (restaurantId) => {
-        const response = await fetch(`http://localhost:3001/api/reviews?restaurantId=${restaurantId}`);
-        if (!response.ok) throw new Error('Error fetching reviews');
-        return await response.json();
-    }
-);
 
 const initialState = reviewsAdapter.getInitialState({
     loading: false,
@@ -43,5 +35,8 @@ export const {
     selectById: selectReviewById,
     selectIds: selectAllReviewIds,
 } = reviewsAdapter.getSelectors(state => state.reviews);
+
+export const selectReviewsByRestaurantId = (state, restaurantId) =>
+    selectAllReviews(state).filter(review => review.restaurantId === restaurantId);
 
 export default reviewsSlice.reducer;
