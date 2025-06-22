@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
-import { selectCartItems } from '../../redux/cart/cartSlise';
+import { selectCartItems } from '../../redux/entities/cart/cartSlise.js';
+import { CartItem } from './CartItem.jsx';
 
 export const Cart = () => {
     const items = useSelector(selectCartItems);
-    const dishes = useSelector(state => state.dishes.entities); // Получаем все блюда
 
     if (!items.length) {
         return null;
@@ -15,15 +15,10 @@ export const Cart = () => {
                 <h2>Cart:</h2>
             </div>
             <ul>
-                {items.map(({ id, amount }) => {
-                    const dish = dishes[id];
-                    return (
-                        <li key={id}>
-                            {dish ? dish.name : 'Unknown'} - {amount}
-                        </li>
-                    );
-                })}
+                {items.map(({ id, amount }) => (
+                    <CartItem key={id} id={id} amount={amount} />
+                ))}
             </ul>
         </>
     );
-}
+};

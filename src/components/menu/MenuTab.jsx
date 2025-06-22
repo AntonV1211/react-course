@@ -1,28 +1,17 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice.js';
-import { fetchDishesByRestaurantId } from '../../redux/entities/dishes/dishesThunks.js';
-import { REQUEST_STATUS } from '../../redux/request_status/requestStatus.js';
-import { Menu } from './Menu.jsx';
+import { useGetDishesByRestaurantIdQuery } from '../../redux/api/dishesApi';
 import { useParams } from 'react-router';
-
+import { useGetRestaurantByIdQuery } from '../../redux/api/restaurantsApi';
+import { Menu } from './Menu.jsx';
 
 export const MenuTab = () => {
-    const dispatch = useDispatch();
     const { restaurantId } = useParams();
-    const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
-    const status = useSelector(state => state.dishes.status);
-    const error = useSelector(state => state.dishes.error);
-
-    useEffect(() => {
-        if (restaurant) {
-            dispatch(fetchDishesByRestaurantId(restaurant.id));
-        }
-    }, [dispatch, restaurant]);
+    const { data: restaurant, isLoading: restaurantLoading } = useGetRestaurantByIdQuery(restaurantId);
+    const { data: dishes, isLoading: dishesLoading, error } = useGetDishesByRestaurantIdQuery(restaurantId);
 
     if (!restaurant) return null;
-    if (status === REQUEST_STATUS.LOADING) return <div>Load dishes...</div>;
-    if (status === REQUEST_STATUS.FAILED) return <div>Error: {error}</div>;
+    if (restaurantLoading || dishesLoading) return <div>Load dishes...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+    if (!dishes) return null;
 
-    return <Menu dishIds={restaurant.menu} restaurantId={restaurant.id} />;
+    return <Menu dishIds={dishes.map(d => d.id)} restaurantId={restaurant.id} />;
 };

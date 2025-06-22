@@ -1,40 +1,26 @@
-import { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice.js';
-import { fetchReviews } from '../../redux/entities/reviews/reviewsThunks.js';
-import { fetchUsers } from '../../redux/entities/users/usersThunks.js';
 import { Reviews } from './Reviews.jsx';
-import { REQUEST_STATUS } from '../../redux/request_status/requestStatus.js';
+import { useGetReviewsByRestaurantIdQuery } from '../../redux/api/reviewsApi';
+import { useGetUsersQuery } from '../../redux/api/usersApi';
+import { useGetRestaurantByIdQuery } from '../../redux/api/restaurantsApi';
 
 export const ReviewsTab = () => {
     const { restaurantId } = useParams();
-    const dispatch = useDispatch();
-    const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
-    const reviewsStatus = useSelector(state => state.reviews.status);
-    const reviewsError = useSelector(state => state.reviews.error);
-    const usersStatus = useSelector(state => state.users.status);
-    const usersError = useSelector(state => state.users.error);
-
-    useEffect(() => {
-        dispatch(fetchReviews(restaurantId));
-    }, [dispatch, restaurantId]);
-
-    useEffect(() => {
-        dispatch(fetchUsers());
-    }, [dispatch]);
+    const { data: restaurant, isLoading: restaurantLoading } = useGetRestaurantByIdQuery(restaurantId);
+    const { data: reviews, isLoading: reviewsLoading, error: reviewsError } = useGetReviewsByRestaurantIdQuery(restaurantId);
+    const { isLoading: usersLoading, error: usersError } = useGetUsersQuery();
 
     if (!restaurant) return null;
 
-    if (reviewsStatus === REQUEST_STATUS.LOADING || usersStatus === REQUEST_STATUS.LOADING) {
+    if (restaurantLoading || reviewsLoading || usersLoading) {
         return <div>Load reviews...</div>;
     }
-    if (reviewsStatus === REQUEST_STATUS.FAILED) {
-        return <div>Error uploading reviews: {reviewsError}</div>;
+    if (reviewsError) {
+        return <div>Error uploading reviews: {reviewsError.message}</div>;
     }
-    if (usersStatus === REQUEST_STATUS.FAILED) {
-        return <div>User upload error: {usersError}</div>;
+    if (usersError) {
+        return <div>User upload error: {usersError.message}</div>;
     }
 
-    return <Reviews reviewIds={restaurant.reviews} />;
+    return <Reviews reviewIds={reviews?.map(r => r.id) ?? []} restaurantId={restaurantId} />;
 };

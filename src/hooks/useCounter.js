@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart, selectItemAmountById } from '../redux/cart/cartSlise';
+import { addToCart, removeFromCart, selectItemAmountById } from '../redux/entities/cart/cartSlise';
 
 export const useCounter = (dishId) => {
     const dispatch = useDispatch();

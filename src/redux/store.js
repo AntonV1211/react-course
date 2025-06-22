@@ -1,16 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { restaurantsSlice } from "./entities/restaurants/restaurantsSlice";
-import { dishesSlice } from "./entities/dishes/dishesSlice";
-import { reviewsSlice } from "./entities/reviews/reviewsSlice";
-import { usersSlice } from "./entities/users/usersSlice";
-import { cartSlice } from "./cart/cartSlise";
+import { cartSlice } from "./entities/cart/cartSlise";
+import { dishesApi } from "./api/dishesApi";
+import { usersApi } from "./api/usersApi";
+import { reviewsApi } from "./api/reviewsApi";
+import { restaurantsApi } from "./api/restaurantsApi";
 
 export const store = configureStore({
     reducer: {
-        [restaurantsSlice.name]: restaurantsSlice.reducer,
-        [dishesSlice.name]: dishesSlice.reducer,
-        [reviewsSlice.name]: reviewsSlice.reducer,
-        [usersSlice.name]: usersSlice.reducer,
         [cartSlice.name]: cartSlice.reducer,
+        [restaurantsApi.reducerPath]: restaurantsApi.reducer,
+        [dishesApi.reducerPath]: dishesApi.reducer,
+        [usersApi.reducerPath]: usersApi.reducer,
+        [reviewsApi.reducerPath]: reviewsApi.reducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(
+            dishesApi.middleware,
+            usersApi.middleware,
+            reviewsApi.middleware,
+            restaurantsApi.middleware
+        ),
 });

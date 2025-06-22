@@ -1,14 +1,14 @@
-import { useSelector } from 'react-redux';
-import { selectDishById } from '../../redux/entities/dishes/dishesSlice';
+import { useGetDishByIdQuery } from '../../redux/api/dishesApi';
 import style from './css/menuItem.module.css';
 import { DishCounter } from './DishCounter.jsx';
 import { useUser } from '../../hooks/useUser';
 import { Link } from 'react-router';
 
 export const MenuItem = ({ dishId, restaurantId }) => {
-    const dish = useSelector(state => selectDishById(state, dishId));
+    const { data: dish, isLoading } = useGetDishByIdQuery(dishId);
     const { user } = useUser();
 
+    if (isLoading) return <li>Loading...</li>;
     if (!dish) return null;
 
     return (

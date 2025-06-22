@@ -3,23 +3,39 @@ import { useReviewForm } from './useReviewForm';
 import { useTheme } from '../../hooks/useTheme';
 import classNames from 'classnames';
 import styles from './css/reviewForm.module.css';
+import { useAddReviewMutation } from '../../redux/api/reviewsApi';
+import { useUser } from '../../hooks/useUser';
 
-export const ReviewForm = () => {
+export const ReviewForm = ({ restaurantId }) => {
     const { state, handleChange, handleRatingChange, handleClear } = useReviewForm();
     const { theme } = useTheme();
+    const { user } = useUser();
+    const [addReview, { isLoading }] = useAddReviewMutation();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!user) return;
+        await addReview({
+            restaurantId,
+            userId: "a304959a-76c0-4b34-954a-b38dbf310360",//user.id,
+            text: state.text,
+            rating: state.rating,
+        });
+        handleClear();
+    };
 
     return (
         <>
             <h3>Feedback form</h3>
-            <form onSubmit={e => e.preventDefault()} className={styles.reviewForm}>
+            <form onSubmit={handleSubmit} className={styles.reviewForm}>
                 <div className={styles.field}>
                     <input
                         type="text"
                         name="user"
                         className={styles.input}
                         placeholder="User name"
-                        value={state.user}
-                        onChange={handleChange}
+                        value={user.name}
+                        disabled
                         required
                     />
                 </div>
@@ -44,6 +60,9 @@ export const ReviewForm = () => {
                     />
                 </div>
                 <div className={styles.actions}>
+                    <button type="submit" className={classNames(styles.button, theme)} disabled={isLoading}>
+                        {isLoading ? 'Sending...' : 'Send'}
+                    </button>
                     <button type="button" className={classNames(styles.button, theme)} onClick={handleClear}>
                         Clear
                     </button>

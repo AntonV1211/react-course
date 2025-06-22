@@ -1,29 +1,24 @@
-import { useEffect } from 'react';
+import React from 'react';
 import { useParams, NavLink, Outlet, useLocation, useNavigate } from 'react-router';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
-import { fetchRestaurantById } from '../../redux/entities/restaurants/restaurantsThunks';
+import { useGetRestaurantByIdQuery } from '../../redux/api/restaurantsApi';
 import styles from '../restaurant/css/restaurantTab.module.css';
 import classNames from 'classnames';
 
 export const RestaurantDetailsLayout = () => {
     const { restaurantId } = useParams();
-    const dispatch = useDispatch();
+    const { data: restaurant, isLoading } = useGetRestaurantByIdQuery(restaurantId);
     const location = useLocation();
     const navigate = useNavigate();
-    const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
 
-    useEffect(() => {
-        dispatch(fetchRestaurantById(restaurantId));
-    }, [dispatch, restaurantId]);
-
-    useEffect(() => {
+    // Автоматический переход на menu
+    React.useEffect(() => {
         if (restaurant && location.pathname === `/restaurants/${restaurantId}`) {
             navigate('menu', { replace: true });
         }
     }, [restaurant, location.pathname, restaurantId, navigate]);
 
-    if (!restaurant) return <div>Load...</div>;
+    if (isLoading) return <div>Load...</div>;
+    if (!restaurant) return <div>Not found</div>;
 
     return (
         <div className={styles.restaurantDetails}>
