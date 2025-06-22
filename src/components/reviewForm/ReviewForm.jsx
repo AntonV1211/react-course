@@ -17,7 +17,7 @@ export const ReviewForm = ({ restaurantId }) => {
         if (!user) return;
         await addReview({
             restaurantId,
-            userId: "a304959a-76c0-4b34-954a-b38dbf310360",//user.id,
+            userId: "a304959a-76c0-4b34-954a-b38dbf310360",//"a304959a-76c0-4b34-954a-b38dbf310360",//user.id,
             text: state.text,
             rating: state.rating,
         });
