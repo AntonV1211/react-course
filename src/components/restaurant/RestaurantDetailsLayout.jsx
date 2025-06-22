@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useParams, NavLink, Outlet, Navigate, useLocation } from 'react-router-dom';
+import { useParams, NavLink, Outlet, useLocation, useNavigate, Navigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRestaurantById, selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
 import styles from '../restaurant/css/restaurantTab.module.css';
+import classNames from 'classnames';
 
 export const RestaurantDetailsLayout = () => {
     const { restaurantId } = useParams();
@@ -14,6 +15,7 @@ export const RestaurantDetailsLayout = () => {
             dispatch(fetchRestaurantById(restaurantId));
         }
     }, [dispatch, restaurantId, restaurant]);
+
     if (!restaurant) return <div>Load...</div>;
 
     if (location.pathname === `/restaurants/${restaurantId}`) {
@@ -28,15 +30,15 @@ export const RestaurantDetailsLayout = () => {
                     to="menu"
                     end
                     className={({ isActive }) =>
-                        [styles.tab, isActive ? styles.activeTab : ''].join(' ')
+                        classNames(styles.tab, { [styles.activeTab]: isActive })
                     }
                 >
-                    Menu
+                    Menuы
                 </NavLink>
                 <NavLink
                     to="reviews"
                     className={({ isActive }) =>
-                        [styles.tab, isActive ? styles.activeTab : ''].join(' ')
+                        classNames(styles.tab, { [styles.activeTab]: isActive })
                     }
                 >
                     Reviews

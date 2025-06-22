@@ -1,6 +1,6 @@
 import { useCounter } from '../../hooks/useCounter.js';
 import { Counter } from '../counter/Counter.jsx';
-import { useUser } from '../context/userContext/UserContext.jsx';
+import { useUser } from '../../hooks/useUser';
 
 export const DishCounter = ({ dishId }) => {
     const { user } = useUser();

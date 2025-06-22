@@ -1,10 +1,12 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice.js';
 import { REQUEST_STATUS } from '../../redux/request_status/requestStatus.js';
 import { fetchDishes, selectAllDishIds } from '../../redux/entities/dishes/dishesSlice.js';
 import { Menu } from './Menu.jsx';
+import { useParams } from 'react-router';
+
 
 export const MenuTab = () => {
     const dispatch = useDispatch();

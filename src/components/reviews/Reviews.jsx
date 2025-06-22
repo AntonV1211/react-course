@@ -1,6 +1,6 @@
 import { Review } from './Review.jsx';
 import { ReviewForm } from '../reviewForm/ReviewForm.jsx';
-import { useUser } from '../context/userContext/UserContext.jsx';
+import { useUser } from '../../hooks/useUser';
 
 export const Reviews = ({ reviewIds }) => {
     const { user } = useUser();
