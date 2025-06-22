@@ -1,18 +1,23 @@
-import { useParams, NavLink, Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
-//import styles from './css/restaurantDetails.module.css';
+import { useParams, NavLink, Outlet, useLocation, useNavigate } from 'react-router';
+import { useEffect } from 'react';
 import styles from '../restaurant/css/restaurantTab.module.css';
+import classNames from 'classnames';
 
 export const RestaurantDetailsLayout = () => {
     const { restaurantId } = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
     const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
-    if (!restaurant) return <div>Ресторан не найден</div>;
 
-    if (location.pathname === `/restaurants/${restaurantId}`) {
-        return <Navigate to="menu" replace />;
-    }
+    useEffect(() => {
+        if (restaurant && location.pathname === `/restaurants/${restaurantId}`) {
+            navigate('menu', { replace: true });
+        }
+    }, [restaurant, location.pathname, restaurantId, navigate]);
+
+    if (!restaurant) return <div>Ресторан не найден</div>;
 
     return (
         <div className={styles.restaurantDetails}>
@@ -22,15 +27,15 @@ export const RestaurantDetailsLayout = () => {
                     to="menu"
                     end
                     className={({ isActive }) =>
-                        [styles.tab, isActive ? styles.activeTab : ''].join(' ')
+                        classNames(styles.tab, { [styles.activeTab]: isActive })
                     }
                 >
-                    Menu
+                    Menuы
                 </NavLink>
                 <NavLink
                     to="reviews"
                     className={({ isActive }) =>
-                        [styles.tab, isActive ? styles.activeTab : ''].join(' ')
+                        classNames(styles.tab, { [styles.activeTab]: isActive })
                     }
                 >
                     Reviews

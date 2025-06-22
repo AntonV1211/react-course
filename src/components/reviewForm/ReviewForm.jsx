@@ -1,6 +1,6 @@
-import { Counter } from '../counter/Counter.jsx';
-import { useReviewForm } from './useReviewForm.js';
-import { useTheme } from '../context/themeContext/ThemeContext.jsx';
+import { Counter } from '../counter/Counter';
+import { useReviewForm } from './useReviewForm';
+import { useTheme } from '../../hooks/useTheme';
 import classNames from 'classnames';
 import styles from './css/reviewForm.module.css';
 

@@ -1,7 +1,8 @@
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice.js';
 import { Menu } from './Menu.jsx';
+import { useParams } from 'react-router';
+
 
 export const MenuTab = () => {
     const { restaurantId } = useParams();

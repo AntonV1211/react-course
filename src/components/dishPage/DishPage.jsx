@@ -1,8 +1,7 @@
-import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectDishById } from '../../redux/entities/dishes/dishesSlice';
 import { DishCounter } from '../menu/DishCounter.jsx';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 export const DishPage = () => {
     const { dishId } = useParams();

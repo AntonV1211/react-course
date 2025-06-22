@@ -1,5 +1,5 @@
-import { ThemeProvider } from '../context/themeContext/ThemeContext.jsx';
-import { UserProvider } from '../context/userContext/UserContext.jsx';
+import { ThemeProvider } from '../context/themeContext/ThemeProvider.jsx';
+import { UserProvider } from '../context/userContext/UserProvider.jsx';
 import { Layout } from '../layout/Layout.jsx'
 import { RestaurantTabs } from '../restaurant/RestaurantTabs.jsx';
 import { Provider } from 'react-redux';
@@ -9,7 +9,7 @@ import { RestaurantDetailsLayout } from '../restaurant/RestaurantDetailsLayout.j
 import { MenuTab } from '../menu/MenuTab.jsx';
 import { ReviewsTab } from '../reviews/ReviewsTab.jsx';
 import { DishPage } from '../dishPage/DishPage.jsx';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import '../../styles/main.css'
 
 export const App = () => {

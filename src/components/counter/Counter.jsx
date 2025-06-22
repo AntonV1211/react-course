@@ -1,4 +1,4 @@
-import { useTheme } from '../context/themeContext/ThemeContext.jsx';
+import { useTheme } from '../../hooks/useTheme';
 import classNames from 'classnames';
 import styles from './css/counter.module.css';
 
