@@ -1,21 +1,42 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { normalizedRestaurants } from '../../../../materials/normalized-mock.js';
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { fetchRestaurants, fetchRestaurantById } from './restaurantsThunks';
 
-const initialState = {
-    ids: normalizedRestaurants.map(({ id }) => id),
-    entities: normalizedRestaurants.reduce((acc, restaurant) => {
-        acc[restaurant.id] = restaurant;
-        return acc;
-    }, {}),
-};
+const restaurantsAdapter = createEntityAdapter();
+
+const initialState = restaurantsAdapter.getInitialState({
+    loading: false,
+    error: null,
+});
 
 export const restaurantsSlice = createSlice({
     name: "restaurants",
     initialState,
-    selectors: {
-        selectAllRestaurantIds: (state) => state.ids,
-        selectRestaurantById: (state, restaurantId) => state.entities[restaurantId],
-    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchRestaurants.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchRestaurants.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                restaurantsAdapter.setAll(state, action.payload);
+            })
+            .addCase(fetchRestaurants.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(fetchRestaurantById.fulfilled, (state, action) => {
+                restaurantsAdapter.upsertOne(state, action.payload);
+            });
+    }
 });
 
-export const { selectAllRestaurantIds, selectRestaurantById } = restaurantsSlice.selectors;
+export const {
+    selectAll: selectAllRestaurants,
+    selectById: selectRestaurantById,
+    selectIds: selectAllRestaurantIds,
+} = restaurantsAdapter.getSelectors(state => state.restaurants);
+
+export default restaurantsSlice.reducer;

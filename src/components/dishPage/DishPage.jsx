@@ -1,16 +1,24 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams, useLocation, useNavigate } from 'react-router';
 import { selectDishById } from '../../redux/entities/dishes/dishesSlice';
+import { fetchDishById } from '../../redux/entities/dishes/dishesThunks.js';
 import { DishCounter } from '../menu/DishCounter.jsx';
-import { useLocation, useNavigate, useParams } from 'react-router';
 
 export const DishPage = () => {
     const { dishId } = useParams();
+    const dispatch = useDispatch();
     const dish = useSelector(state => selectDishById(state, dishId));
     const location = useLocation();
     const navigate = useNavigate();
     const restaurantId = location.state?.restaurantId;
-    if (!dish) return <div>Блюдо не найдено</div>;
-    console.log('location.state:', location.state);
+
+    useEffect(() => {
+        dispatch(fetchDishById(dishId));
+    }, [dispatch, dishId]);
+
+    if (!dish) return <div>Dish not found</div>;
+
     return (
         <div>
             <h2>{dish.name}</h2>

@@ -1,15 +1,21 @@
-import { useSelector } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
-import { useParams, NavLink, Outlet, useLocation, useNavigate } from 'react-router';
 import { useEffect } from 'react';
+import { useParams, NavLink, Outlet, useLocation, useNavigate } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
+import { fetchRestaurantById } from '../../redux/entities/restaurants/restaurantsThunks';
 import styles from '../restaurant/css/restaurantTab.module.css';
 import classNames from 'classnames';
 
 export const RestaurantDetailsLayout = () => {
     const { restaurantId } = useParams();
+    const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
     const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
+
+    useEffect(() => {
+        dispatch(fetchRestaurantById(restaurantId));
+    }, [dispatch, restaurantId]);
 
     useEffect(() => {
         if (restaurant && location.pathname === `/restaurants/${restaurantId}`) {
@@ -17,7 +23,7 @@ export const RestaurantDetailsLayout = () => {
         }
     }, [restaurant, location.pathname, restaurantId, navigate]);
 
-    if (!restaurant) return <div>Ресторан не найден</div>;
+    if (!restaurant) return <div>Load...</div>;
 
     return (
         <div className={styles.restaurantDetails}>
@@ -30,7 +36,7 @@ export const RestaurantDetailsLayout = () => {
                         classNames(styles.tab, { [styles.activeTab]: isActive })
                     }
                 >
-                    Menuы
+                    Menu
                 </NavLink>
                 <NavLink
                     to="reviews"
