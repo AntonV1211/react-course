@@ -1,19 +1,44 @@
 import { Review } from './Review.jsx';
 import { ReviewForm } from '../reviewForm/ReviewForm.jsx';
-import { useUser } from '../../hooks/useUser';
+import { useState } from 'react';
 
-export const Reviews = ({ reviewIds }) => {
-    const { user } = useUser();
+export const Reviews = ({ restaurantId, reviews, user }) => {
+    const [editingReview, setEditingReview] = useState(null);
+
+    if (!reviews?.length) return (
+        <>
+            <div>No reviews</div>
+            {user && (
+                <ReviewForm
+                    restaurantId={restaurantId}
+                    editingReview={editingReview}
+                    onCancelEdit={() => setEditingReview(null)}
+                    onFinishEdit={() => setEditingReview(null)}
+                />
+            )}
+        </>
+    );
 
     return (
         <>
-            <h3>Reviews:</h3>
             <ul>
-                {reviewIds.map(id => (
-                    <Review key={id} reviewId={id} />
+                {reviews.map(review => (
+                    <Review
+                        key={review.id}
+                        review={review}
+                        userId={review.userId}
+                        onEdit={() => setEditingReview(review)}
+                    />
                 ))}
             </ul>
-            {user && <ReviewForm />}
+            {user && (
+                <ReviewForm
+                    restaurantId={restaurantId}
+                    editingReview={editingReview}
+                    onCancelEdit={() => setEditingReview(null)}
+                    onFinishEdit={() => setEditingReview(null)}
+                />
+            )}
         </>
     );
 };

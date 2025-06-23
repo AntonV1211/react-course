@@ -1,54 +1,59 @@
-import { Counter } from '../counter/Counter';
-import { useReviewForm } from './useReviewForm';
-import { useTheme } from '../../hooks/useTheme';
-import classNames from 'classnames';
-import styles from './css/reviewForm.module.css';
+import { ReviewFormBase } from './ReviewFormBase';
+import { useAddReviewMutation, useUpdateReviewMutation } from '../../redux/api/reviewsApi';
+import { useUser } from '../../hooks/useUser';
+import { useEffect } from 'react';
 
-export const ReviewForm = () => {
-    const { state, handleChange, handleRatingChange, handleClear } = useReviewForm();
-    const { theme } = useTheme();
+export const ReviewForm = ({
+    restaurantId,
+    editingReview,
+    onCancelEdit,
+    onFinishEdit,
+}) => {
+    const { user } = useUser();
+    const [addReview, { isLoading: isAdding }] = useAddReviewMutation();
+    const [updateReview, { isLoading: isUpdating }] = useUpdateReviewMutation();
+
+    const isEditing = Boolean(editingReview);
+
+    const handleSubmit = async ({ text, rating }) => {
+        if (!user) return;
+        if (isEditing) {
+            await updateReview({
+                reviewId: editingReview.id,
+                restaurantId,
+                text,
+                rating,
+            });
+            onFinishEdit?.();
+        } else {
+            await addReview({
+                restaurantId,
+                userId: user.id,
+                text,
+                rating,
+            });
+        }
+    };
+
+    // Сброс формы при смене режима
+    useEffect(() => {
+        if (!isEditing) onCancelEdit?.();
+    }, [editingReview]);
 
     return (
         <>
-            <h3>Feedback form</h3>
-            <form onSubmit={e => e.preventDefault()} className={styles.reviewForm}>
-                <div className={styles.field}>
-                    <input
-                        type="text"
-                        name="user"
-                        className={styles.input}
-                        placeholder="User name"
-                        value={state.user}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className={styles.field}>
-                    <textarea
-                        name="text"
-                        className={styles.textarea}
-                        placeholder="Description"
-                        value={state.text}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className={[styles.field, styles.rating].join(' ')}>
-                    <div style={{ fontSize: 14 }}>Rating:</div>
-                    <Counter
-                        count={state.rating}
-                        increment={() => handleRatingChange(Math.min(state.rating + 1, 5))}
-                        decrement={() => handleRatingChange(Math.max(state.rating - 1, 1))}
-                        min={1}
-                        max={5}
-                    />
-                </div>
-                <div className={styles.actions}>
-                    <button type="button" className={classNames(styles.button, theme)} onClick={handleClear}>
-                        Clear
-                    </button>
-                </div>
-            </form >
+            <h3>{isEditing ? 'Edit review' : 'Feedback form'}</h3>
+            <ReviewFormBase
+                initialValues={{
+                    text: editingReview?.text || '',
+                    rating: editingReview?.rating || 1,
+                }}
+                onSubmit={handleSubmit}
+                onClear={onCancelEdit}
+                user={user}
+                isLoading={isAdding || isUpdating}
+                submitLabel={isEditing ? 'Save' : 'Send'}
+            />
         </>
     );
 };

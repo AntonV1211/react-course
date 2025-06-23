@@ -1,31 +1,32 @@
-import { useSelector } from 'react-redux';
+import { useGetRestaurantsQuery } from '../../redux/api/restaurantsApi';
 import { useTheme } from '../../hooks/useTheme';
 import { RestaurantTabButton } from './RestaurantTabButton.jsx';
-import { selectAllRestaurantIds } from '../../redux/entities/restaurants/restaurantsSlice';
 import styles from './css/restaurantTab.module.css';
 import { useParams, NavLink } from 'react-router';
 import classNames from 'classnames';
 
 export const RestaurantTabs = () => {
-    const restaurantIds = useSelector(selectAllRestaurantIds);
+    const { data: restaurants, isLoading, error } = useGetRestaurantsQuery();
     const { restaurantId } = useParams();
     const { theme } = useTheme();
 
-    if (!restaurantIds.length) return null;
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error loading restaurants</div>;
+    if (!restaurants?.length) return null;
 
     return (
         <div className={styles.restaurantTabs}>
-            {restaurantIds.map((id) => (
+            {restaurants.map((restaurant) => (
                 <NavLink
-                    key={id}
-                    to={`/restaurants/${id}`}
+                    key={restaurant.id}
+                    to={`/restaurants/${restaurant.id}`}
                     className={({ isActive }) =>
                         classNames(styles.restaurantTab, { [styles.active]: isActive }, styles[theme])
                     }
                 >
                     <RestaurantTabButton
-                        restaurantId={id}
-                        active={restaurantId === id}
+                        restaurant={restaurant}
+                        active={restaurantId === restaurant.id}
                         theme={theme}
                     />
                 </NavLink>

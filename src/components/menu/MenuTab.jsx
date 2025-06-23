@@ -1,12 +1,14 @@
-import { useSelector } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice.js';
-import { Menu } from './Menu.jsx';
+import { useGetDishesByRestaurantIdQuery } from '../../redux/api/dishesApi';
 import { useParams } from 'react-router';
-
+import { Menu } from './Menu.jsx';
 
 export const MenuTab = () => {
     const { restaurantId } = useParams();
-    const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
-    if (!restaurant) return null;
-    return <Menu dishIds={restaurant.menu} restaurantId={restaurant.id} />;
+    const { data: dishes, isLoading, error } = useGetDishesByRestaurantIdQuery(restaurantId);
+
+    if (isLoading) return <div>Load dishes...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+    if (!dishes) return null;
+
+    return <Menu dishes={dishes} restaurantId={restaurantId} />;
 };

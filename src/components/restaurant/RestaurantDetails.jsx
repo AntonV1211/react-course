@@ -1,11 +1,11 @@
-import { useSelector } from 'react-redux';
-import { selectRestaurantById } from '../../redux/entities/restaurants/restaurantsSlice';
+import { useGetRestaurantByIdQuery } from '../../redux/api/restaurantsApi';
 import { Menu } from '../menu/Menu.jsx';
 import { Reviews } from '../reviews/Reviews.jsx';
 import style from './css/restaurantDetails.module.css';
 
 export const RestaurantDetails = ({ restaurantId }) => {
-    const restaurant = useSelector(state => selectRestaurantById(state, restaurantId));
+    const { data: restaurant, isLoading } = useGetRestaurantByIdQuery(restaurantId);
+    if (isLoading) return <div>Loading...</div>;
     if (!restaurant) return null;
 
     return (

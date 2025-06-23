@@ -1,12 +1,9 @@
-import { useSelector } from 'react-redux';
-import { selectDishById } from '../../redux/entities/dishes/dishesSlice';
 import style from './css/menuItem.module.css';
 import { DishCounter } from './DishCounter.jsx';
 import { useUser } from '../../hooks/useUser';
 import { Link } from 'react-router';
 
-export const MenuItem = ({ dishId, restaurantId }) => {
-    const dish = useSelector(state => selectDishById(state, dishId));
+export const MenuItem = ({ dish, restaurantId }) => {
     const { user } = useUser();
 
     if (!dish) return null;
@@ -16,14 +13,14 @@ export const MenuItem = ({ dishId, restaurantId }) => {
             <div className={style.menuItem}>
                 <div>
                     <Link
-                        to={`/dish/${dishId}`}
+                        to={`/dish/${dish.id}`}
                         state={{ restaurantId }}
                     >
                         <strong>{dish.name}</strong>
                     </Link>
                     {' '} - ${dish.price.toFixed(2)}
                 </div>
-                {user && <DishCounter dishId={dishId} />}
+                {user && <DishCounter dishId={dish.id} />}
             </div>
         </li>
     );
