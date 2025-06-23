@@ -1,17 +1,21 @@
 import { Review } from './Review.jsx';
-import { useGetReviewsByRestaurantIdQuery } from '../../redux/api/reviewsApi';
 import { ReviewForm } from '../reviewForm/ReviewForm.jsx';
-import { useUser } from '../../hooks/useUser';
+import { useState } from 'react';
 
-export const Reviews = ({ restaurantId }) => {
-    const { data: reviews, isLoading } = useGetReviewsByRestaurantIdQuery(restaurantId);
-    const { user } = useUser();
+export const Reviews = ({ restaurantId, reviews, user }) => {
+    const [editingReview, setEditingReview] = useState(null);
 
-    if (isLoading) return <div>Loading...</div>;
     if (!reviews?.length) return (
         <>
             <div>No reviews</div>
-            {user && <ReviewForm restaurantId={restaurantId} />}
+            {user && (
+                <ReviewForm
+                    restaurantId={restaurantId}
+                    editingReview={editingReview}
+                    onCancelEdit={() => setEditingReview(null)}
+                    onFinishEdit={() => setEditingReview(null)}
+                />
+            )}
         </>
     );
 
@@ -19,10 +23,22 @@ export const Reviews = ({ restaurantId }) => {
         <>
             <ul>
                 {reviews.map(review => (
-                    <Review key={review.id} review={review} userId={review.userId} />
+                    <Review
+                        key={review.id}
+                        review={review}
+                        userId={review.userId}
+                        onEdit={() => setEditingReview(review)}
+                    />
                 ))}
             </ul>
-            {user && <ReviewForm restaurantId={restaurantId} />}
+            {user && (
+                <ReviewForm
+                    restaurantId={restaurantId}
+                    editingReview={editingReview}
+                    onCancelEdit={() => setEditingReview(null)}
+                    onFinishEdit={() => setEditingReview(null)}
+                />
+            )}
         </>
     );
 };

@@ -1,14 +1,11 @@
-import { useGetDishByIdQuery } from '../../redux/api/dishesApi';
 import style from './css/menuItem.module.css';
 import { DishCounter } from './DishCounter.jsx';
 import { useUser } from '../../hooks/useUser';
 import { Link } from 'react-router';
 
-export const MenuItem = ({ dishId, restaurantId }) => {
-    const { data: dish, isLoading } = useGetDishByIdQuery(dishId);
+export const MenuItem = ({ dish, restaurantId }) => {
     const { user } = useUser();
 
-    if (isLoading) return <li>Loading...</li>;
     if (!dish) return null;
 
     return (
@@ -16,14 +13,14 @@ export const MenuItem = ({ dishId, restaurantId }) => {
             <div className={style.menuItem}>
                 <div>
                     <Link
-                        to={`/dish/${dishId}`}
+                        to={`/dish/${dish.id}`}
                         state={{ restaurantId }}
                     >
                         <strong>{dish.name}</strong>
                     </Link>
                     {' '} - ${dish.price.toFixed(2)}
                 </div>
-                {user && <DishCounter dishId={dishId} />}
+                {user && <DishCounter dishId={dish.id} />}
             </div>
         </li>
     );
